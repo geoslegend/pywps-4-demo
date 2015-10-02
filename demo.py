@@ -12,7 +12,7 @@ from werkzeug.wrappers import Response
 sys.path.append(os.path.join(
     os.path.dirname(os.path.abspath(__file__)),
     os.path.pardir))
-
+func
 from server import Server
 from processes.sleep import Sleep
 from processes.ultimate_question import UltimateQuestion
@@ -80,7 +80,7 @@ def start(args, kill = None):
     except ImportError, ie:
         platform_name = "Windows"
 
-    from funthread import FuncThread
+    from functhread import FuncThread
         
     server_instances = {}
     # List of server instances running
