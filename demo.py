@@ -73,12 +73,27 @@ def start(args, kill = None):
         Server(processes=processes, host='0.0.0.0', port=5002)
     ]
 
-    # List of server instances running
+    platform_name = ""
+    try:
+        import platform
+        platform_name = platform.system()
+    except ImportError, ie:
+        platform_name = "Windows"
+
+    from funthread import FuncThread
+        
     server_instances = {}
+    # List of server instances running
     for s in server_list:
-        p = multiprocessing.Process(target=s.run)
+        process_id = ""
+        if platform_name == "Windows":
+            p = FuncThread(s.run)
+            process_id = p.name
+        else:
+            p = multiprocessing.Process(target=s.run)
+            process_id = p.pid
         p.start()
-        server_instances[p.pid] = {'Process': p, 'ServerObject': s}
+        server_instances[process_id] = {'Process': p, 'ServerObject': s}
 
     if args.waitress:
         # TODO: make waitress use multiprocessing
